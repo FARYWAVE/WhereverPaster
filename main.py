@@ -13,12 +13,11 @@ def get_last_one_from_clipboard():
 
 def run_main_cycle():
     global exit_flag
-
     def click(key, shifted):
         if shifted:
             keyboard.press('shift')
         keyboard.press(key)
-        time.sleep(0.002)
+        time.sleep(0.1)
         keyboard.release(key)
         if shifted:
             keyboard.release('shift')
@@ -28,9 +27,9 @@ def run_main_cycle():
         exit_flag = True
 
     def on_paste():
-        time.sleep(0.2)
+        time.sleep(0.1)
         clipboard = get_last_one_from_clipboard()
-        text = clipboard.replace("\n", " ")
+        text = " " + clipboard.replace("\n", "")
         print(text)
         for char in text:
             click(char, char in additional_symbols)
