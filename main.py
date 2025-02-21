@@ -13,6 +13,14 @@ def get_last_one_from_clipboard():
 
 def run_main_cycle():
     global exit_flag
+
+    def prepare_space(lines_count):
+        for _ in range(lines_count):
+            click('enter', False)
+
+        for _ in range(lines_count):
+            click('up', False)
+
     def click(key, shifted):
         if shifted:
             keyboard.press('shift')
@@ -27,12 +35,13 @@ def run_main_cycle():
         exit_flag = True
 
     def on_paste():
-        time.sleep(0.1)
+        time.sleep(0.3)
         clipboard = get_last_one_from_clipboard()
-        text = " " + clipboard.replace("\n", "")
-        print(text)
-        for char in text:
-            click(char, char in additional_symbols)
+        text = clipboard.replace("\n", "").replace("\t", "    ").split("\r")
+        prepare_space(len(text))
+        for line in text:
+            keyboard.write(line, delay=0.09)
+            click("down", False)
 
     keyboard.add_hotkey('ctrl+alt+e', on_exit)
     keyboard.add_hotkey('ctrl+alt+p', on_paste)
